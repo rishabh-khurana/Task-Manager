@@ -1,3 +1,7 @@
-.home-container {
-    background-color: #2A3855;
+.list-title{
+    padding: 1.5rem;
+}
+.list-container{
+    padding: 1.5rem;
+    background-color: rgb(41, 48, 75);
 }
