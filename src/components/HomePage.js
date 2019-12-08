@@ -9,45 +9,53 @@ import Typography from '@material-ui/core/Typography';
 import SimpleCard from './Task';
 
 
+function RenderTasks(Testdata) {
 
-let Testdata = [
-    [
-        {
-            indexNo:1,
-            taskName:"Task One",
-            taskdesc:"This is the first task which in Todo",
-            timeOfRegister:"20/11/2019",
-            importance:"High"
-        },
-        {
-            indexNo:2,
-            taskName:"Task One",
-            taskdesc:"This is the second task which in Todo",
-            timeOfRegister:"20/11/2019",
-            importance:"Low"
-        }
-    ],
-    [
-        {
-            indexNo:1,
-            taskName:"Task One",
-            taskdesc:"This is the first task which in Progress",
-            timeOfRegister:"20/11/2019",
-            importance:"High"
-        }
-    ],
-    [
-        {
-            indexNo:1,
-            taskName:"Task One",
-            taskdesc:"This is the first task which complete",
-            timeOfRegister:"20/11/2019",
-            importance:"High"
-        }
-    ],
-]
+    let result=Testdata.map((e)=>{
+        return <SimpleCard key={e.indexNo}></SimpleCard>;
+    })
+    return result
+}
+
 
 function HomePage(){
+    let Testdata = [
+        [
+            {
+                indexNo:1,
+                taskName:"Task One",
+                taskdesc:"This is the first task which in Todo",
+                timeOfRegister:"20/11/2019",
+                importance:"High"
+            },
+            {
+                indexNo:2,
+                taskName:"Task One",
+                taskdesc:"This is the second task which in Todo",
+                timeOfRegister:"20/11/2019",
+                importance:"Low"
+            }
+        ],
+        [
+            {
+                indexNo:1,
+                taskName:"Task One",
+                taskdesc:"This is the first task which in Progress",
+                timeOfRegister:"20/11/2019",
+                importance:"High"
+            }
+        ],
+        [
+            {
+                indexNo:1,
+                taskName:"Task One",
+                taskdesc:"This is the first task which complete",
+                timeOfRegister:"20/11/2019",
+                importance:"High"
+            }
+        ],
+    ]
+
     return(
         <div>
             <PrimarySearchAppBar/>
@@ -56,19 +64,25 @@ function HomePage(){
                     <div className='list-title'>
                         <Typography variant='h4'><FileCopyIcon/>To do</Typography>
                     </div>
-                    <div className='list-container'><SimpleCard/></div>
+                    <div className='list-container'>
+                        {RenderTasks(Testdata[0])}
+                    </div>
                 </Grid>
                 <Grid item sm xs={12}>
                     <div className='list-title'>
                         <Typography variant='h4'><BuildIcon/>In Progress</Typography>
                     </div>
-                    <div className='list-container'></div>
+                    <div className='list-container'>
+                        {RenderTasks(Testdata[1])}
+                    </div>
                 </Grid>
                 <Grid item sm xs={12}>
                     <div className='list-title'>
                         <Typography variant='h4'><CheckCircleIcon/>Completed</Typography>
                     </div>
-                    <div className='list-container'></div>
+                    <div className='list-container'>
+                        {RenderTasks(Testdata[2])}
+                    </div>
                 </Grid>
             </Grid>
         </div>

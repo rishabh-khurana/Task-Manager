@@ -8,12 +8,18 @@ import Typography from '@material-ui/core/Typography';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import TimerIcon from '@material-ui/icons/Timer';
 import WarningIcon from '@material-ui/icons/Warning';
+import { relative } from 'path';
 
 const useStyles = makeStyles({
   card: {
+    marginBottom: '1rem',
   },
   title: {
     fontSize: 20,
+  },
+  titleIcon: {
+    top: '0.2rem',
+    position: 'relative'
   }
 });
 
@@ -24,7 +30,7 @@ export default function SimpleCard() {
     <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title} component="h2" gutterBottom>
-          <WarningIcon/>Title of the Task
+          <WarningIcon className={classes.titleIcon}/>Title of the Task
         </Typography>
         <Typography component="p" color="textSecondary">
           This is the description of the task
