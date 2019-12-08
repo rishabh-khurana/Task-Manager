@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import TimerIcon from '@material-ui/icons/Timer';
+import WarningIcon from '@material-ui/icons/Warning';
 
 const useStyles = makeStyles({
   card: {
@@ -22,8 +23,8 @@ export default function SimpleCard() {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Typography className={classes.title} gutterBottom>
-          Title of the Task
+        <Typography className={classes.title} component="h2" gutterBottom>
+          <WarningIcon/>Title of the Task
         </Typography>
         <Typography component="p" color="textSecondary">
           This is the description of the task
@@ -31,7 +32,7 @@ export default function SimpleCard() {
       </CardContent>
       <CardActions>
         <Button><PlayCircleOutlineIcon/>Start</Button>
-        <Button>
+        <Button disabled>
           <TimerIcon/>1h 2m 3s
         </Button>
       </CardActions>

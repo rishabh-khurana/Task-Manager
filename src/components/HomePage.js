@@ -16,7 +16,15 @@ let Testdata = [
             indexNo:1,
             taskName:"Task One",
             taskdesc:"This is the first task which in Todo",
-            timeOfRegister:"20/11/2019"
+            timeOfRegister:"20/11/2019",
+            importance:"High"
+        },
+        {
+            indexNo:2,
+            taskName:"Task One",
+            taskdesc:"This is the second task which in Todo",
+            timeOfRegister:"20/11/2019",
+            importance:"Low"
         }
     ],
     [
@@ -24,7 +32,8 @@ let Testdata = [
             indexNo:1,
             taskName:"Task One",
             taskdesc:"This is the first task which in Progress",
-            timeOfRegister:"20/11/2019"
+            timeOfRegister:"20/11/2019",
+            importance:"High"
         }
     ],
     [
@@ -32,7 +41,8 @@ let Testdata = [
             indexNo:1,
             taskName:"Task One",
             taskdesc:"This is the first task which complete",
-            timeOfRegister:"20/11/2019"
+            timeOfRegister:"20/11/2019",
+            importance:"High"
         }
     ],
 ]
