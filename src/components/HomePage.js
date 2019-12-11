@@ -12,7 +12,7 @@ import SimpleCard from './Task';
 function RenderTasks(Testdata) {
 
     let result=Testdata.map((e)=>{
-        return <SimpleCard key={e.indexNo}></SimpleCard>;
+        return <SimpleCard key={e.indexNo} data={e}></SimpleCard>;
     })
     return result
 }
@@ -32,7 +32,7 @@ function HomePage(){
                 indexNo:2,
                 taskName:"Task One",
                 taskdesc:"This is the second task which in Todo",
-                timeOfRegister:"20/11/2019",
+                timeOfRegister:"21/11/2019",
                 importance:"Low"
             }
         ],
