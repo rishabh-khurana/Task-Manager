@@ -33,7 +33,8 @@ function SimpleCard(props) {
     <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title} component="h2" gutterBottom>
-          <WarningIcon className={classes.titleIcon}/>{props.data.taskName}
+          {props.data.importance === "High" ? <WarningIcon className={classes.titleIcon}/>:null}
+          {props.data.taskName}
         </Typography>
         <Typography component="p" color="textSecondary">
           {props.data.taskdesc}
