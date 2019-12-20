@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,8 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import TimerIcon from '@material-ui/icons/Timer';
 import WarningIcon from '@material-ui/icons/Warning';
+import { CardTypes,ImportanceType } from '../utils/flags';
+import { withStyles } from '@material-ui/core/styles';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
-const useStyles = makeStyles({
+const styles = (theme) => ({
   card: {
     marginBottom: '1.5rem',
     "&:last-child": {
@@ -21,33 +24,48 @@ const useStyles = makeStyles({
   },
   titleIcon: {
     top: '0.2rem',
-    position: 'relative'
+    position: 'relative',
+    marginRight: '0.5rem'
   }
 });
 
-function SimpleCard(props) {
+class SimpleCard extends React.Component{
 
-  const classes = useStyles();
-
-  return (
-    <Card className={classes.card}>
-      <CardContent>
-        <Typography className={classes.title} component="h2" gutterBottom>
-          {props.data.importance === "High" ? <WarningIcon className={classes.titleIcon}/>:null}
-          {props.data.taskName}
-        </Typography>
-        <Typography component="p" color="textSecondary">
-          {props.data.taskdesc}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button><PlayCircleOutlineIcon/>Start</Button>
-        <Button disabled>
-          <TimerIcon/>1d 1h 2m 3s
-        </Button>
-      </CardActions>
-    </Card>
-  );
+  constructor(){
+    //const classes = useStyles();
+    super()
+    this.state={
+      //classes:classes
+      cardTypes:CardTypes,
+      importanceType:ImportanceType
+  }
 }
 
-export default SimpleCard;
+  render(){
+    const { classes } = this.props;
+    return (
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography className={classes.title} component="h2" gutterBottom>
+            {this.props.data.importance === this.state.importanceType.HIGH ? <WarningIcon className={classes.titleIcon}/>:null}
+            {this.props.data.taskName}
+          </Typography>
+          <Typography component="p" color="textSecondary">
+            {this.props.data.taskdesc}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          {this.props.cardtype === this.state.cardTypes.TODO ? <Button style={{backgroundColor:'#50aa4d', color: 'white'}}><PlayCircleOutlineIcon/>Start</Button>:null}
+          {this.props.cardtype === this.state.cardTypes.INPROGRESS ? <Button style={{backgroundColor:'#0086f9', color: 'white'}}><CheckCircleOutlineIcon/>Done</Button>:null}
+          <Button disabled>
+            <TimerIcon/>1d 1h 2m 3s
+          </Button>
+        </CardActions>
+      </Card>
+
+    );
+
+  }
+}
+
+export default withStyles(styles)(SimpleCard);

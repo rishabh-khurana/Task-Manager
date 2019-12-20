@@ -37,7 +37,7 @@ class HomePage extends React.Component{
                 <Grid container spacing={1}>
                     <Grid item sm xs={12}>
                         <div className='list-title'>
-                            <Typography variant='h4'><FileCopyIcon/>To do</Typography>
+                            <Typography style={{fontSize:'1.8rem'}} variant='h4'><FileCopyIcon style={{marginRight:'0.5rem'}}/>To do</Typography>
                         </div>
                         <div className='list-container'>
                             {RenderTasks(this.state.data[0],this.state.Cardtypes.TODO)}
@@ -45,7 +45,7 @@ class HomePage extends React.Component{
                     </Grid>
                     <Grid item sm xs={12}>
                         <div className='list-title'>
-                            <Typography variant='h4'><BuildIcon/>In Progress</Typography>
+                            <Typography style={{fontSize:'1.8rem'}} variant='h4'><BuildIcon style={{marginRight:'0.5rem'}}/>In Progress</Typography>
                         </div>
                         <div className='list-container'>
                             {RenderTasks(this.state.data[1],this.state.Cardtypes.INPROGRESS)}
@@ -53,7 +53,7 @@ class HomePage extends React.Component{
                     </Grid>
                     <Grid item sm xs={12}>
                         <div className='list-title'>
-                            <Typography variant='h4'><CheckCircleIcon/>Completed</Typography>
+                            <Typography style={{fontSize:'1.8rem'}} variant='h4'><CheckCircleIcon style={{marginRight:'0.5rem'}}/>Completed</Typography>
                         </div>
                         <div className='list-container'>
                             {RenderTasks(this.state.data[2],this.state.Cardtypes.COMPLETED)}
