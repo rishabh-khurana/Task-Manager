@@ -55,8 +55,8 @@ class SimpleCard extends React.Component{
           </Typography>
         </CardContent>
         <CardActions>
-          {this.props.cardtype === this.state.cardTypes.TODO ? <Button style={{backgroundColor:'#50aa4d', color: 'white'}}><PlayCircleOutlineIcon/>Start</Button>:null}
-          {this.props.cardtype === this.state.cardTypes.INPROGRESS ? <Button style={{backgroundColor:'#0086f9', color: 'white'}}><CheckCircleOutlineIcon/>Done</Button>:null}
+          {this.props.cardtype === this.state.cardTypes.TODO ? <Button style={{backgroundColor:'#50aa4d', color: 'white'}} onClick={(e)=>this.props.clickHandler(this.props.data)}><PlayCircleOutlineIcon/>Start</Button>:null}
+          {this.props.cardtype === this.state.cardTypes.INPROGRESS ? <Button style={{backgroundColor:'#0086f9', color: 'white'}} onClick={(e)=>this.props.clickHandler(this.props.data)}><CheckCircleOutlineIcon/>Done</Button>:null}
           <Button disabled>
             <TimerIcon/>1d 1h 2m 3s
           </Button>

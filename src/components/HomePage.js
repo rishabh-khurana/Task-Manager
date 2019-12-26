@@ -8,16 +8,7 @@ import BuildIcon from '@material-ui/icons/Build';
 import Typography from '@material-ui/core/Typography';
 import SimpleCard from './Task';
 import CardTypes from '../utils/flags';
-import Testdata from '../utils/test';
 
-// Render each task in a specific category
-function RenderTasks(CardData,Cardtype) {
-
-    let result=CardData.map((e)=>{
-        return <SimpleCard key={e.indexNo} data={e} cardtype={Cardtype}></SimpleCard>;
-    })
-    return result
-}
 
 
 class HomePage extends React.Component{
@@ -25,10 +16,67 @@ class HomePage extends React.Component{
     constructor(){
         super()
         this.state={
-            data:Testdata,
+            todoList:[
+                {
+                    taskName:"Unique Task One",
+                    taskdesc:"This is the first task which in Todo",
+                    timeOfRegister:"20/11/2019",
+                    importance:"High"
+                },
+                {
+                    taskName:"Unique Task Two",
+                    taskdesc:"This is the second task which in Todo",
+                    timeOfRegister:"21/11/2019",
+                    importance:"Low"
+                }
+            ],
+            inProgressList:[
+                {
+                    taskName:"Unique Task Three",
+                    taskdesc:"This is the first task which in Progress",
+                    timeOfRegister:"20/11/2019",
+                    importance:"High"
+                }
+            ],
+            completedList:[
+                {
+                    taskName:"Unique Task Four",
+                    taskdesc:"This is the first task which complete",
+                    timeOfRegister:"20/11/2019",
+                    importance:"High"
+                }
+            ],
             Cardtypes:CardTypes
         }
     }
+
+    // Move Todo task to the InProgress list
+    StartTodoTask(data){
+        // Add task to the InProgress List
+        const newitem=data
+        this.setState({inProgressList:[...this.state.inProgressList,newitem]})
+
+        // Remove task from existing Todo List
+        const newList=this.state.todoList.filter(task => task.taskName!==data.taskName)
+        this.setState({todoList:newList})
+
+        // Save in database
+    }
+
+    CompleteTask(data){
+        // Add task to the InProgress List
+        const newitem=data
+        this.setState({completedList:[...this.state.completedList,newitem]})
+
+        // Remove task from existing Todo List
+        const newList=this.state.inProgressList.filter(task => task.taskName!==data.taskName)
+        this.setState({inProgressList:newList})
+
+        // Save in database
+    }
+
+   
+
 
     render(){
         return(
@@ -40,7 +88,7 @@ class HomePage extends React.Component{
                             <Typography style={{fontSize:'1.8rem'}} variant='h4'><FileCopyIcon style={{marginRight:'0.5rem'}}/>To do</Typography>
                         </div>
                         <div className='list-container'>
-                            {RenderTasks(this.state.data[0],this.state.Cardtypes.TODO)}
+                            {this.state.todoList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.TODO} clickHandler={this.StartTodoTask.bind(this,e)}></SimpleCard>)}
                         </div>
                     </Grid>
                     <Grid item sm xs={12}>
@@ -48,7 +96,7 @@ class HomePage extends React.Component{
                             <Typography style={{fontSize:'1.8rem'}} variant='h4'><BuildIcon style={{marginRight:'0.5rem'}}/>In Progress</Typography>
                         </div>
                         <div className='list-container'>
-                            {RenderTasks(this.state.data[1],this.state.Cardtypes.INPROGRESS)}
+                            {this.state.inProgressList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.INPROGRESS} clickHandler={this.CompleteTask.bind(this,e)}></SimpleCard>)}
                         </div>
                     </Grid>
                     <Grid item sm xs={12}>
@@ -56,7 +104,7 @@ class HomePage extends React.Component{
                             <Typography style={{fontSize:'1.8rem'}} variant='h4'><CheckCircleIcon style={{marginRight:'0.5rem'}}/>Completed</Typography>
                         </div>
                         <div className='list-container'>
-                            {RenderTasks(this.state.data[2],this.state.Cardtypes.COMPLETED)}
+                            {this.state.completedList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.COMPLETED} clickHandler={this.StartTodoTask}></SimpleCard>)}
                         </div>
                     </Grid>
                 </Grid>
