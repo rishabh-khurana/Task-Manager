@@ -8,6 +8,7 @@ import BuildIcon from '@material-ui/icons/Build';
 import Typography from '@material-ui/core/Typography';
 import SimpleCard from './Task';
 import CardTypes from '../utils/flags';
+import NewTaskDialog from './NewTaskDialog';
 
 
 
@@ -46,7 +47,8 @@ class HomePage extends React.Component{
                     importance:"High"
                 }
             ],
-            Cardtypes:CardTypes
+            Cardtypes:CardTypes,
+            isModalOpen:false
         }
     }
 
@@ -75,13 +77,19 @@ class HomePage extends React.Component{
         // Save in database
     }
 
-   
+    OpenModal(){
+        this.setState({isModalOpen:true})
+    }
+
+    CloseModal(){
+        this.setState({isModalOpen:false})
+    }
 
 
     render(){
         return(
             <div>
-                <PrimarySearchAppBar/>
+                <PrimarySearchAppBar dialogOpenHandler={this.OpenModal.bind(this)}/>
                 <Grid container spacing={1}>
                     <Grid item sm xs={12}>
                         <div className='list-title'>
@@ -107,6 +115,7 @@ class HomePage extends React.Component{
                             {this.state.completedList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.COMPLETED} clickHandler={this.StartTodoTask}></SimpleCard>)}
                         </div>
                     </Grid>
+                <NewTaskDialog isModalOpen={this.state.isModalOpen} dialogCloseHandler={this.CloseModal.bind(this)}/>
                 </Grid>
             </div>
         );
