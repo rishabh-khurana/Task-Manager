@@ -32,7 +32,7 @@ export default function NewTaskDialog(props) {
 
   const [task, setTask] = React.useState('');
   const [desc, setDesc] = React.useState('');
-  const [value, setValue] = React.useState('HIGH');
+  const [value, setValue] = React.useState('High');
 
   const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T18:30:00'));
 
@@ -53,9 +53,17 @@ export default function NewTaskDialog(props) {
   };
 
   const taskCreate = () => {
-    // props.handleClose() implement handle close 
-    
-    // send all values to parent 
+    // create object
+    const taskObj={
+        taskName:task,
+        taskdesc:desc,
+        timeOfRegister:selectedDate,
+        importance:value
+    }
+    // send all values to parent
+    props.createTaskHandler(taskObj);
+    // close the dialog
+    props.dialogCloseHandler();
   }
 
   return (
@@ -88,8 +96,8 @@ export default function NewTaskDialog(props) {
             Task Importance Level (High/Low)
           </DialogContentText>
         <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-          <FormControlLabel value="HIGH" control={<Radio />} label="High" />
-          <FormControlLabel value="LOW" control={<Radio />} label="Low" />
+          <FormControlLabel value="High" control={<Radio />} label="High" />
+          <FormControlLabel value="Low" control={<Radio />} label="Low" />
         </RadioGroup>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Grid container justify="space-around">

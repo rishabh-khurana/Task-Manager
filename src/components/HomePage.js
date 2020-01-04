@@ -77,6 +77,12 @@ class HomePage extends React.Component{
         // Save in database
     }
 
+    CreateNewTask(data){
+        // Add task to the InProgress List
+        const newitem=data
+        this.setState({todoList:[...this.state.todoList,newitem]})
+    }
+
     OpenModal(){
         this.setState({isModalOpen:true})
     }
@@ -105,7 +111,7 @@ class HomePage extends React.Component{
                         </div>
                         <div className='list-container'>
                             {this.state.inProgressList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.INPROGRESS} clickHandler={this.CompleteTask.bind(this,e)}></SimpleCard>)}
-                        </div>
+                            completedList        </div>
                     </Grid>
                     <Grid item sm xs={12}>
                         <div className='list-title'>
@@ -115,7 +121,7 @@ class HomePage extends React.Component{
                             {this.state.completedList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.COMPLETED} clickHandler={this.StartTodoTask}></SimpleCard>)}
                         </div>
                     </Grid>
-                <NewTaskDialog isModalOpen={this.state.isModalOpen} dialogCloseHandler={this.CloseModal.bind(this)}/>
+                <NewTaskDialog isModalOpen={this.state.isModalOpen} dialogCloseHandler={this.CloseModal.bind(this)} createTaskHandler={this.CreateNewTask.bind(this)}/>
                 </Grid>
             </div>
         );
