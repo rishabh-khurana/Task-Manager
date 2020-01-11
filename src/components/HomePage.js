@@ -111,14 +111,14 @@ class HomePage extends React.Component{
                         </div>
                         <div className='list-container'>
                             {this.state.inProgressList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.INPROGRESS} clickHandler={this.CompleteTask.bind(this,e)}></SimpleCard>)}
-                            completedList        </div>
+                        </div>
                     </Grid>
                     <Grid item sm xs={12}>
                         <div className='list-title'>
                             <Typography style={{fontSize:'1.8rem'}} variant='h4'><CheckCircleIcon style={{marginRight:'0.5rem'}}/>Completed</Typography>
                         </div>
                         <div className='list-container'>
-                            {this.state.completedList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.COMPLETED} clickHandler={this.StartTodoTask}></SimpleCard>)}
+                            {this.state.completedList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.COMPLETED}></SimpleCard>)}
                         </div>
                     </Grid>
                 <NewTaskDialog isModalOpen={this.state.isModalOpen} dialogCloseHandler={this.CloseModal.bind(this)} createTaskHandler={this.CreateNewTask.bind(this)}/>
