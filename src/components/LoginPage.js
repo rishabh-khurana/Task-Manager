@@ -21,11 +21,6 @@ class LoginPage extends React.Component{
         // if it does not -> throw error
     }
 
-    SignUpHandler = () => {
-        // redirect to Sign up page
-        console.log("Sign Up is clicked");
-    }
-
     render(){
         return(
             <div>
@@ -44,7 +39,6 @@ class LoginPage extends React.Component{
                             fullWidth
                         />
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="pswd"
                             label="Password"
@@ -56,7 +50,7 @@ class LoginPage extends React.Component{
                         <Button onClick={this.LoginHandler}>
                             Login
                         </Button>
-                        <Button onClick={this.SignUpHandler}>
+                        <Button href='/signup'>
                             Sign Up
                         </Button>
                     </DialogActions>

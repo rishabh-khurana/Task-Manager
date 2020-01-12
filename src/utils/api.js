@@ -9,6 +9,13 @@ const AddNewUser = (firstName,lastName,userName,password) =>{
               }
             console.log('New User is added.');
         });
+
+    dao.db.close((err) => {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log('Close the database connection.');
+    });
 }
 
-export default AddNewUser;
+export {AddNewUser};

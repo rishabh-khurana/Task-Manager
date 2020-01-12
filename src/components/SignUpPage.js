@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 //import AddNewUser from '../utils/api';
 
+
 class SignUpPage extends React.Component{
 
     constructor(props){
@@ -65,38 +66,35 @@ class SignUpPage extends React.Component{
                             label="First Name"
                             type="email"
                             fullWidth
-                            onBlur={this.setFirstName}
+                            onBlur={this.setFirstName.bind(this)}
                         />
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="last-name"
                             label="Last Name"
                             type="email"
                             fullWidth
-                            onBlur={this.setLastName}
+                            onBlur={this.setLastName.bind(this)}
                         />
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="user-name"
                             label="User Name"
                             type="email"
                             fullWidth
-                            onBlur={this.setUserName}
+                            onBlur={this.setUserName.bind(this)}
                         />
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="pswd"
                             label="Password"
                             type="password"
                             fullWidth
-                            onBlur={this.setPassword}   
+                            onBlur={this.setPassword.bind(this)}   
                         />
                     </DialogContent>
                     <DialogActions>
-                        <Button>
+                        <Button href='/login'>
                             Back
                         </Button>
                         <Button onClick={this.SignUpHandler}>
