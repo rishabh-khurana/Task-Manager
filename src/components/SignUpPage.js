@@ -6,11 +6,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
+//import AddNewUser from '../utils/api';
 
 class SignUpPage extends React.Component{
 
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
+        this.state = {
+            userName:'',
+            password:'',
+            firstName:'',
+            lastName:''
+        }
     }
 
     SignUpHandler = () => {
@@ -19,11 +26,30 @@ class SignUpPage extends React.Component{
         // if it does throw error
 
         // if it does not create entry in user table in the database
+        // AddNewUser(this.state.firstName,this.state.lastName,this.state.userName,this.state.password)
         console.log("Sign up is done")
         // redirect to login page
     }
 
+    setUserName(event){
+        this.setState({userName:event.target.value}) 
+    }
+
+    setPassword(event){
+        this.setState({password:event.target.value}) 
+    }
+
+
+    setFirstName(event){
+        this.setState({firstName:event.target.value}) 
+    }
+
+    setLastName(event){
+        this.setState({lastName:event.target.value}) 
+    }
+
     render(){
+
         return(
             <div>
                 <Dialog open={true}>
@@ -39,6 +65,7 @@ class SignUpPage extends React.Component{
                             label="First Name"
                             type="email"
                             fullWidth
+                            onBlur={this.setFirstName}
                         />
                         <TextField
                             autoFocus
@@ -47,6 +74,7 @@ class SignUpPage extends React.Component{
                             label="Last Name"
                             type="email"
                             fullWidth
+                            onBlur={this.setLastName}
                         />
                         <TextField
                             autoFocus
@@ -55,6 +83,7 @@ class SignUpPage extends React.Component{
                             label="User Name"
                             type="email"
                             fullWidth
+                            onBlur={this.setUserName}
                         />
                         <TextField
                             autoFocus
@@ -62,10 +91,14 @@ class SignUpPage extends React.Component{
                             id="pswd"
                             label="Password"
                             type="password"
-                            fullWidth   
+                            fullWidth
+                            onBlur={this.setPassword}   
                         />
                     </DialogContent>
                     <DialogActions>
+                        <Button>
+                            Back
+                        </Button>
                         <Button onClick={this.SignUpHandler}>
                             Done
                         </Button>
