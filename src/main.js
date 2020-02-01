@@ -2,6 +2,13 @@ const express = require('express');
 const app = express();
 const AppDAO = require('./utils/dao');
 const dao = new AppDAO('./database.sqlite3');
+const cors = require('cors');
+
+app.use(cors())
+
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // create user table if not exists
 const createUsers='CREATE TABLE IF NOT EXISTS user(username VARCHAR PRIMARY KEY,password VARCHAR NOT NULL,firstname TEXT NOT NULL,lastname TEXT);'
@@ -52,6 +59,38 @@ app.get('/api/users',(req,res)=>{
       });
 });
 
-const port=3000;
+app.post("/api/user/", (req, res, next) => {
+  var errors=[]
+  if (!req.body.userName){
+      errors.push("No username specified");
+  }
+  if (!req.body.password){
+      errors.push("No password specified");
+  }
+  if (errors.length){
+      res.status(400).json({"error":errors.join(",")});
+      return;
+  }
+  var data = {
+      userName: req.body.userName,
+      password: req.body.password,
+      firstName : req.body.firstName,
+      lastName: req.body.lastName
+  }
+  var sql ='INSERT INTO user (username, password, firstname, lastname) VALUES (?,?,?,?)'
+  var params =[data.userName, data.password, data.firstName, data.lastName]
+  dao.db.run(sql, params, function (err, result) {
+      if (err){
+          res.status(400).json({"error": err.message})
+          return;
+      }
+      res.json({
+          "message": "success",
+          "data": data
+      })
+  });
+})
 
-app.listen(port,()=>{console.log('listening on port 3000')});
+const port=4000;
+
+app.listen(port,()=>{console.log('listening on port 4000')});

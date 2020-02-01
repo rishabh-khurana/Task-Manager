@@ -6,8 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
-//import AddNewUser from '../utils/api';
-
+import axios from 'axios';
 
 class SignUpPage extends React.Component{
 
@@ -27,7 +26,15 @@ class SignUpPage extends React.Component{
         // if it does throw error
 
         // if it does not create entry in user table in the database
-        // AddNewUser(this.state.firstName,this.state.lastName,this.state.userName,this.state.password)
+        axios.post('http://localhost:4000/api/user',this.state)
+            .then(res=>{
+                console.log(res)
+                console.log(res.data)
+            })
+            .catch(error=>{
+                console.log(error.response)
+            })
+        //console.log(this.state)
         console.log("Sign up is done")
         // redirect to login page
     }
