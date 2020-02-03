@@ -59,6 +59,7 @@ app.get('/api/users',(req,res)=>{
       });
 });
 
+// create new user
 app.post("/api/user/", (req, res, next) => {
   var errors=[]
   if (!req.body.userName){
@@ -89,6 +90,37 @@ app.post("/api/user/", (req, res, next) => {
           "data": data
       })
   });
+})
+
+// login user
+app.post("/api/auth", (req, res, next) => {
+    var errors=[]
+    if (!req.body.userName){
+        errors.push("No username specified");
+    }
+    if (!req.body.password){
+        errors.push("No password specified");
+    }
+    if (errors.length){
+        res.status(400).json({"error":errors.join(",")});
+        return;
+    }
+    var data = {
+        userName: req.body.userName,
+        password: req.body.password
+    }
+    var sql ='SELECT * FROM user WHERE username = ? AND password = ?'
+    var params =[data.userName, data.password]
+    dao.db.all(sql, params, function (err, result) {
+        if (err){
+            res.status(400).json({"error": err.message})
+            return;
+        }
+        res.json({
+            "message": "Login Successful",
+            "data":result
+        })
+    });
 })
 
 const port=4000;
