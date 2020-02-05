@@ -17,12 +17,12 @@ You will also see any lint errors in the console.
 Runs the main.js file on [http://localhost:4000](http://localhost:4000).<br />
 The main.js file is an API which is connected to the database and runs all queries requested by the client side running on [http://localhost:3000](http://localhost:3000)
 
-This command should be run in the project directory inside the src/ folder as follows:
-`/Desktop/Task-Manager/src$ node main.js
-listening on port 4000
-Connected to database
-User table is created.
-Task table is created.
+This command should be run in the project directory inside the src/ folder as follows:<br />
+`/Desktop/Task-Manager/src$ node main.js<br />
+listening on port 4000<br />
+Connected to database<br />
+User table is created.<br />
+Task table is created.<br />
 `
 
 ## Additional Scripts
