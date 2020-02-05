@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Scripts Available to the run the application 
 
 To run the application , in the project directory, you must run:
 
@@ -16,6 +16,16 @@ You will also see any lint errors in the console.
 
 Runs the main.js file on [http://localhost:4000](http://localhost:4000).<br />
 The main.js file is an API which is connected to the database and runs all queries requested by the client side running on [http://localhost:3000](http://localhost:3000)
+
+This command should be run in the project directory inside the src/ folder as follows:
+`/Desktop/Task-Manager/src$ node main.js
+listening on port 4000
+Connected to database
+User table is created.
+Task table is created.
+`
+
+## Additional Scripts
 
 In the project directory, you can also run:
 
