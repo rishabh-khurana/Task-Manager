@@ -18,7 +18,8 @@ Runs the main.js file on [http://localhost:4000](http://localhost:4000).<br />
 The main.js file is an API which is connected to the database and runs all queries requested by the client side running on [http://localhost:3000](http://localhost:3000)
 
 This command should be run in the project directory inside the src/ folder as follows:<br />
-```/Desktop/Task-Manager/src$ node main.js<br />
+```
+/Desktop/Task-Manager/src$ node main.js
 listening on port 4000
 Connected to database
 User table is created.
