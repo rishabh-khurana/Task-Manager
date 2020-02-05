@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+To run the application , in the project directory, you must run:
 
 ### `npm start`
 
@@ -11,6 +11,13 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
+
+### `node main.js`
+
+Runs the main.js file on [http://localhost:4000](http://localhost:4000).<br />
+The main.js file is an API which is connected to the database and runs all queries requested by the client side running on [http://localhost:3000](http://localhost:3000)
+
+In the project directory, you can also run:
 
 ### `npm test`
 
