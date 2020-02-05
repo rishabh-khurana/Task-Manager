@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import auth from '../utils/auth';
 
 class LoginPage extends React.Component{
 
@@ -23,11 +24,15 @@ class LoginPage extends React.Component{
         console.log("Login action fired");
         axios.post('http://localhost:4000/api/auth',this.state)
             .then(res=>{
-                if(res.data.length){
+                if(res.data.data.length){
                     // if it does -> redirect to HomePage
+                    auth.login(()=>{
+                        this.props.history.push('/home')
+                    })
                 }else{
                     // if it does not -> throw error
                     console.log("Username or password incorrect")
+                    console.log(res.data.data.length)
                 }
             })
             .catch(error=>{

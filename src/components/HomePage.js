@@ -9,13 +9,13 @@ import Typography from '@material-ui/core/Typography';
 import SimpleCard from './Task';
 import CardTypes from '../utils/flags';
 import NewTaskDialog from './NewTaskDialog';
-
+import auth from '../utils/auth'
 
 
 class HomePage extends React.Component{
 
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state={
             todoList:[
                 {
@@ -91,11 +91,17 @@ class HomePage extends React.Component{
         this.setState({isModalOpen:false})
     }
 
+    logoutHandler(){
+        auth.logout(()=>{
+            this.props.history.push('/')
+        })
+    }
+
 
     render(){
         return(
             <div>
-                <PrimarySearchAppBar dialogOpenHandler={this.OpenModal.bind(this)}/>
+                <PrimarySearchAppBar dialogOpenHandler={this.OpenModal.bind(this)} handleLogout={this.logoutHandler.bind(this)}/>
                 <Grid container spacing={1}>
                     <Grid item sm xs={12}>
                         <div className='list-title'>
