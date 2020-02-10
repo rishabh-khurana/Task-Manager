@@ -9,47 +9,48 @@ import Typography from '@material-ui/core/Typography';
 import SimpleCard from './Task';
 import CardTypes from '../utils/flags';
 import NewTaskDialog from './NewTaskDialog';
-import auth from '../utils/auth'
+import auth from '../utils/auth';
+import axios from 'axios';
 
+function handleFilter(arr1,arr2,type){
+    arr1.forEach(function(e){
+                if(e.tasktype === type) 
+                    arr2.push(e) 
+            });
+}
 
 class HomePage extends React.Component{
 
     constructor(props){
         super(props)
         this.state={
-            todoList:[
-                {
-                    taskName:"Unique Task One",
-                    taskdesc:"This is the first task which in Todo",
-                    timeOfRegister:"20/11/2019",
-                    importance:"High"
-                },
-                {
-                    taskName:"Unique Task Two",
-                    taskdesc:"This is the second task which in Todo",
-                    timeOfRegister:"21/11/2019",
-                    importance:"Low"
-                }
-            ],
-            inProgressList:[
-                {
-                    taskName:"Unique Task Three",
-                    taskdesc:"This is the first task which in Progress",
-                    timeOfRegister:"20/11/2019",
-                    importance:"High"
-                }
-            ],
-            completedList:[
-                {
-                    taskName:"Unique Task Four",
-                    taskdesc:"This is the first task which complete",
-                    timeOfRegister:"20/11/2019",
-                    importance:"High"
-                }
-            ],
+            userName:auth.getUserDetails(),
+            todoList:[],
+            inProgressList:[],
+            completedList:[],
             Cardtypes:CardTypes,
             isModalOpen:false
         }
+        // console.log('Hello' + ' ' + this.state.userName)
+        // load all existing tasks
+        axios.post('http://localhost:4000/api/getAllTasks',{userName:this.state.userName})
+            .then(res=>{
+                //console.log("First Data Load" + ' ' + JSON.stringify(res.data.data))
+                const copy = this.state
+                var todoList=[]
+                var inProgressList=[]
+                var completedList=[]
+                handleFilter(res.data.data,todoList,this.state.Cardtypes.TODO)
+                copy["todoList"]=todoList
+                handleFilter(res.data.data,inProgressList,this.state.Cardtypes.INPROGRESS)
+                copy["inProgressList"]=inProgressList
+                handleFilter(res.data.data,completedList,this.state.Cardtypes.COMPLETED)
+                copy["completedList"]=completedList
+                this.setState({...copy})
+            })
+            .catch(err=>{
+                console.log(err.response)
+            })
     }
 
     // Move Todo task to the InProgress list
@@ -59,10 +60,17 @@ class HomePage extends React.Component{
         this.setState({inProgressList:[...this.state.inProgressList,newitem]})
 
         // Remove task from existing Todo List
-        const newList=this.state.todoList.filter(task => task.taskName!==data.taskName)
+        const newList=this.state.todoList.filter(task => task.taskid!==data.taskid)
         this.setState({todoList:newList})
 
         // Save in database
+        axios.post("http://localhost:4000/api/updateTask",{userName:this.state.userName,taskid:data.taskid,taskType:this.state.Cardtypes.INPROGRESS})
+            .then(res=>{
+                console.log(res)
+            })
+            .catch(err=>{
+                console.log(err.response)
+            })
     }
 
     CompleteTask(data){
@@ -71,16 +79,50 @@ class HomePage extends React.Component{
         this.setState({completedList:[...this.state.completedList,newitem]})
 
         // Remove task from existing Todo List
-        const newList=this.state.inProgressList.filter(task => task.taskName!==data.taskName)
+        const newList=this.state.inProgressList.filter(task => task.taskid!==data.taskid)
         this.setState({inProgressList:newList})
 
         // Save in database
+        axios.post("http://localhost:4000/api/updateTask",{userName:this.state.userName,taskid:data.taskid,taskType:this.state.Cardtypes.COMPLETED})
+            .then(res=>{
+                console.log(res)
+            })
+            .catch(err=>{
+                console.log(err.response)
+            })
     }
 
-    CreateNewTask(data){
+    addTask(data){
+        return new Promise(function(resolve,reject){
+            axios.post('http://localhost:4000/api/task',data)
+            .then(res=>{
+                // get task id of the task created
+                console.log(res.data.data)
+                return resolve(res.data.data)
+            })
+            .catch(err=>{
+                console.log(err.response)
+                return reject(err.response)
+            })
+        })
+    }
+
+    async CreateNewTask(data){
         // Add task to the InProgress List
-        const newitem=data
+        data["userName"]=this.state.userName
+        data["taskType"]=this.state.Cardtypes.TODO
+        console.log("New Task" + JSON.stringify(data))
+
+        // wait for task to fetch id first
+        var newitem=data
+        try{
+            newitem["taskid"]= await this.addTask(data)
+        }catch(error){
+            console.error(error)
+        }
+
         this.setState({todoList:[...this.state.todoList,newitem]})
+        console.log(this.state)
     }
 
     OpenModal(){
@@ -108,7 +150,7 @@ class HomePage extends React.Component{
                             <Typography style={{fontSize:'1.8rem'}} variant='h4'><FileCopyIcon style={{marginRight:'0.5rem'}}/>To do</Typography>
                         </div>
                         <div className='list-container'>
-                            {this.state.todoList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.TODO} clickHandler={this.StartTodoTask.bind(this,e)}></SimpleCard>)}
+                            {this.state.todoList.map((e)=> <SimpleCard key={e.taskid} data={e} cardtype={this.state.Cardtypes.TODO} clickHandler={this.StartTodoTask.bind(this,e)}></SimpleCard>)}
                         </div>
                     </Grid>
                     <Grid item sm xs={12}>
@@ -116,7 +158,7 @@ class HomePage extends React.Component{
                             <Typography style={{fontSize:'1.8rem'}} variant='h4'><BuildIcon style={{marginRight:'0.5rem'}}/>In Progress</Typography>
                         </div>
                         <div className='list-container'>
-                            {this.state.inProgressList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.INPROGRESS} clickHandler={this.CompleteTask.bind(this,e)}></SimpleCard>)}
+                            {this.state.inProgressList.map((e)=> <SimpleCard key={e.taskid} data={e} cardtype={this.state.Cardtypes.INPROGRESS} clickHandler={this.CompleteTask.bind(this,e)}></SimpleCard>)}
                         </div>
                     </Grid>
                     <Grid item sm xs={12}>
@@ -124,7 +166,7 @@ class HomePage extends React.Component{
                             <Typography style={{fontSize:'1.8rem'}} variant='h4'><CheckCircleIcon style={{marginRight:'0.5rem'}}/>Completed</Typography>
                         </div>
                         <div className='list-container'>
-                            {this.state.completedList.map((e)=> <SimpleCard key={e.taskName} data={e} cardtype={this.state.Cardtypes.COMPLETED}></SimpleCard>)}
+                            {this.state.completedList.map((e)=> <SimpleCard key={e.taskid} data={e} cardtype={this.state.Cardtypes.COMPLETED}></SimpleCard>)}
                         </div>
                     </Grid>
                 <NewTaskDialog isModalOpen={this.state.isModalOpen} dialogCloseHandler={this.CloseModal.bind(this)} createTaskHandler={this.CreateNewTask.bind(this)}/>

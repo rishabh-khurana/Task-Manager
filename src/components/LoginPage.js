@@ -9,23 +9,31 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import auth from '../utils/auth';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 class LoginPage extends React.Component{
 
     constructor(props){
         super(props)
         this.state = {
-            userName:'',
-            password:''
+            userData:{
+                userName:'',
+                password:'',
+            },
+            alertOpen:false
         }
     }
 
     LoginHandler = () => {
         // check if user and password exists in database
         console.log("Login action fired");
-        axios.post('http://localhost:4000/api/auth',this.state)
+        axios.post('http://localhost:4000/api/auth',this.state.userData)
             .then(res=>{
                 if(res.data.data.length){
                     // if it does -> redirect to HomePage
+                    auth.setUserDetails(this.state.userData.userName)
                     auth.login(()=>{
                         this.props.history.push('/home')
                     })
@@ -33,6 +41,8 @@ class LoginPage extends React.Component{
                     // if it does not -> throw error
                     console.log("Username or password incorrect")
                     console.log(res.data.data.length)
+                    this.setState({alertOpen:true})
+                    console.log(this.state)
                 }
             })
             .catch(error=>{
@@ -41,7 +51,15 @@ class LoginPage extends React.Component{
     }
 
     HandleOnBlur(event){
-        this.setState({[event.target.name]:event.target.value})
+        var Obj=this.state.userData
+        Obj[event.target.name] = event.target.value
+        this.setState({userData:Obj,alertOpen:this.state.alertOpen})
+        console.log(this.state)
+    }
+
+    HandleClose(event){
+        console.log(this.state)
+        this.setState({userData:{...this.state.userData},alertOpen:false})
     }
 
     render(){
@@ -61,6 +79,7 @@ class LoginPage extends React.Component{
                             type="email"
                             fullWidth
                             name='userName'
+                            required
                             onBlur = {this.HandleOnBlur.bind(this)}
                         />
                         <TextField
@@ -70,6 +89,7 @@ class LoginPage extends React.Component{
                             type="password"
                             fullWidth
                             name='password'
+                            required
                             onBlur = {this.HandleOnBlur.bind(this)}   
                         />
                     </DialogContent>
@@ -82,6 +102,26 @@ class LoginPage extends React.Component{
                         </Button>
                     </DialogActions>
                 </Dialog>
+                <Snackbar
+                    anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                    }}
+                    onClose={this.HandleClose.bind(this)}
+                    open={this.state.alertOpen}
+                    autoHideDuration={6000}
+                    message="Username or password incorrect"
+                    action={
+                    <React.Fragment>
+                        <Button color="secondary" size="small" onClick={this.HandleClose.bind(this)}>
+                        UNDO
+                        </Button>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={this.HandleClose.bind(this)} >
+                        <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                    }
+                />
             </div>
         );
     }

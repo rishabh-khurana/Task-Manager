@@ -83,7 +83,6 @@ export default function NewTaskDialog(props) {
             onBlur={handleSetTask}
           />
           <TextField
-            autoFocus
             margin="dense"
             id="desc"
             label="Description"

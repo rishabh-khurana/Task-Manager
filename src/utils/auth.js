@@ -1,6 +1,7 @@
 class Auth{
     constructor(){
         this.authenticated=false
+        this.userName=''
     }
     login(cb){
         this.authenticated=true
@@ -8,10 +9,17 @@ class Auth{
     }
     logout(cb){
         this.authenticated=false
+        this.userName=''
         cb()
     }
     isAuthenticated(){
         return this.authenticated
+    }
+    setUserDetails(name){
+        this.userName=name
+    }
+    getUserDetails(){
+        return this.userName
     }
 }
 

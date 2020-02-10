@@ -20,7 +20,7 @@ dao.db.run(createUsers,(err)=>{
 });
 
 // create task table if not exists
-const createTasks='CREATE TABLE IF NOT EXISTS task(taskid INTEGER PRIMARY KEY,customername VARCHAR UNIQUE NOT NULL,taskname TEXT NOT NULL,taskdesc TEXT NOT NULL,FOREIGN KEY(customername) REFERENCES user(username));'
+const createTasks='CREATE TABLE IF NOT EXISTS task(taskid INTEGER PRIMARY KEY,customername VARCHAR NOT NULL,taskname TEXT NOT NULL,taskdesc TEXT NOT NULL,importance TEXT NOT NULL,tasktype TEXT NOT NULL,FOREIGN KEY(customername) REFERENCES user(username));'
 dao.db.run(createTasks,(err)=>{
     if (err) {
         return console.error(err.message);
@@ -119,6 +119,100 @@ app.post("/api/auth", (req, res, next) => {
         res.json({
             "message": "Login Successful",
             "data":result
+        })
+    });
+})
+
+// get all tasks
+app.get('/api/tasks',(req,res)=>{
+    const getAllTasks='SELECT * FROM task'
+    var params = []
+    dao.db.all(getAllTasks, params, (err, rows) => {
+        if (err) {
+          res.status(400).json({"error":err.message});
+          return;
+        }
+        res.json({
+            "message":"success",
+            "data":rows
+        })
+      });
+});
+
+// create a new task for current user which is logged in
+app.post("/api/task",(req,res,next)=>{
+    var errors=[]
+    if (!req.body.userName){
+        errors.push("No username specified");
+    }
+    if (errors.length){
+        res.status(400).json({"error":errors.join(",")});
+        return;
+    }
+    var data = {
+        userName: req.body.userName,
+        taskName: req.body.taskName,
+        taskdesc: req.body.taskdesc,
+        importance: req.body.importance,
+        taskType: req.body.taskType
+    }
+    var sql ='INSERT INTO task (customername,taskname,taskdesc,importance,tasktype) VALUES (?,?,?,?,?)'
+    var params = [data.userName,data.taskName,data.taskdesc,data.importance,data.taskType]
+    dao.db.run(sql, params, function(err,result){
+        if (err){
+            res.status(400).json({"error": err.message})
+            return;
+        }
+        res.json({
+            "message": "Task Added",
+            "data":this.lastID
+        })
+    });
+})
+
+// get all tasks for a specific user
+app.post("/api/getAllTasks",(req,res,next)=>{
+    var errors=[]
+    if (!req.body.userName){
+        errors.push("No username specified");
+    }
+    if (errors.length){
+        res.status(400).json({"error":errors.join(",")});
+        return;
+    }
+    const sql='SELECT * FROM task WHERE customername = ?'
+    var params = [req.body.userName]
+    dao.db.all(sql, params, function(err,result){
+        if (err){
+            res.status(400).json({"error": err.message})
+            return;
+        }
+        res.json({
+            "message": "Task Added",
+            "data":result
+        })
+    });
+})
+
+// update task type for a specific user
+app.post("/api/updateTask",(req,res,next)=>{
+    var errors=[]
+    if (!req.body.userName){
+        errors.push("No username specified");
+    }
+    if (errors.length){
+        res.status(400).json({"error":errors.join(",")});
+        return;
+    }
+    const sql='UPDATE task SET tasktype = ? WHERE taskid = ? AND customername = ?'
+    var params = [req.body.taskType,req.body.taskid,req.body.userName]
+    dao.db.run(sql, params, function(err,result){
+        if (err){
+            res.status(400).json({"error": err.message})
+            return;
+        }
+        res.json({
+            "message": "Task Updated",
         })
     });
 })
